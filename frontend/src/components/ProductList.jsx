@@ -52,12 +52,6 @@ export default function ProductList() {
           className="border p-2 rounded w-1/3"
         />
         <Link
-          to="/inventory-movements"
-          className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-        >
-          📜 Inventary movements
-        </Link>
-        <Link
           to="/products/create"
           className="bg-blue-500 text-white px-4 py-2 rounded-lg"
         >
@@ -97,12 +91,6 @@ export default function ProductList() {
                   <td className="p-3">{product.quantity}</td>
                   <td className="p-3 flex justify-center space-x-2">
                     <Link
-                      to={`/products/${product.id}`}
-                      className="bg-green-500 text-white px-3 py-1 rounded"
-                    >
-                      👁 Show
-                    </Link>
-                    <Link
                       to={`/products/edit/${product.id}`}
                       className="bg-blue-500 text-white px-3 py-1 rounded"
                     >
@@ -115,7 +103,7 @@ export default function ProductList() {
                       🗑 Delete
                     </button>
                     <Link
-                      to={`/inventory-movements?product=${product.id}`}
+                      to={`/inventory?product=${product.id}`}
                       className="bg-gray-400 text-white px-3 py-1 rounded"
                     >
                       📜 History

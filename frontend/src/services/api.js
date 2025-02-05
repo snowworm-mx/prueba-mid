@@ -15,7 +15,7 @@ export const register = async (userData) => {
 };
 
 export const login = async (credentials) => {
-  await api.get("/sanctum/csrf-cookie");
+  await api.get("http://localhost:8002/sanctum/csrf-cookie");
   return api.post("/login", credentials);
 };
 
@@ -41,4 +41,12 @@ export const updateProduct = async (id, productData) => {
 
 export const deleteProduct = async (id) => {
   return api.delete(`/products/${id}`);
+};
+
+export const getInventoryMovements = async (page = 1, productId = null) => {
+  let url = `/history?page=${page}`;
+  if (productId) {
+    url += `&product=${productId}`;
+  }
+  return api.get(url);
 };
