@@ -29,7 +29,7 @@ function Login() {
 
       if (!newErrors.email && !newErrors.password) {
         await login({ email: form.email, password: form.password });
-        navigate("/dashboard");
+        navigate("/products");
       } else {
         setErrors(newErrors);
       }
@@ -40,34 +40,50 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="user@example.com"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-        {errors.email && <p>{errors.email}</p>}
-      </div>
-      <div>
-        <label>Password: </label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-        {errors.password && <p>{errors.password}</p>}
-      </div>
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-center text-gray-700">Login</h2>
+        <form onSubmit={handleSubmit} className="mt-4">
+          <div>
+            <label>Email:</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="user@example.com"
+              value={form.email}
+              onChange={handleChange}
+              className="w-full px-4 py-2 mb-3 border rounded-lg focus:outline-none"
+              required
+            />
+            {errors.email && (
+              <p className="text-red-500 text-center">{errors.email}</p>
+            )}
+          </div>
+          <div>
+            <label>Password: </label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              className="w-full px-4 py-2 mb-3 border rounded-lg focus:outline-none"
+              required
+            />
+            {errors.password && (
+              <p className="text-red-500 text-center">{errors.password}</p>
+            )}
+          </div>
 
-      <button type="submit">Login</button>
-    </form>
+          <button
+            className="w-full bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg"
+            type="submit"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 

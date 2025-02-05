@@ -53,45 +53,66 @@ function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Name:</label>
-        <input
-          type="text"
-          placeholder="Full Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        {errors.name && <p>{errors.name}</p>}
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-center text-gray-700">
+          Register
+        </h2>
+        <form onSubmit={handleSubmit} className="mt-4">
+          <div>
+            <label>Full Name:</label>
+            <input
+              type="text"
+              placeholder="Full Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-4 py-2 mb-3 border rounded-lg focus:outline-none"
+              required
+            />
+            {errors.name && (
+              <p className="text-red-500 text-center">{errors.name}</p>
+            )}
+          </div>
+          <div>
+            <label>Email:</label>
+            <input
+              type="text"
+              placeholder="user@example.com"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-2 mb-3 border rounded-lg focus:outline-none"
+              required
+            />
+            {errors.email && (
+              <p className="text-red-500 text-center">{errors.email}</p>
+            )}
+          </div>
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-4 py-2 mb-3 border rounded-lg focus:outline-none"
+              required
+            />
+            {errors.password && (
+              <p className="text-red-500 text-center">{errors.password}</p>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg"
+          >
+            Register
+          </button>
+        </form>
       </div>
-      <div>
-        <label>Email:</label>
-        <input
-          type="text"
-          placeholder="user@example.com"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        {errors.email && <p>{errors.email}</p>}
-      </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        {errors.password && <p>{errors.password}</p>}
-      </div>
-      <button type="submit">Register</button>
-    </form>
+    </div>
   );
 }
 
