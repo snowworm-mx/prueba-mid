@@ -28,7 +28,13 @@ function Login() {
       };
 
       if (!newErrors.email && !newErrors.password) {
-        await login({ email: form.email, password: form.password });
+        const response = await login({
+          email: form.email,
+          password: form.password,
+        });
+
+        localStorage.setItem("token", response.data.token);
+        // setAuth(true);
         navigate("/products");
       } else {
         setErrors(newErrors);

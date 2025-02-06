@@ -20,7 +20,7 @@ export default function CreateProduct() {
     e.preventDefault();
     setError("");
 
-    if (!form.name || !form.price || !form.quantity) {
+    if (!form.name || !form.price || !form.stock) {
       setError("Name, price, and stock are required.");
       return;
     }
@@ -80,7 +80,7 @@ export default function CreateProduct() {
           required
         />
 
-        <label className="block mb-2">Quantity</label>
+        <label className="block mb-2">Stock</label>
         <input
           type="number"
           placeholder="Enter stock"

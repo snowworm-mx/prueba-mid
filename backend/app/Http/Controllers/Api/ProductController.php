@@ -8,9 +8,16 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index() {
-        $products = Product::paginate(10);
-        return response()->json($products);
+    public function index(Request $request) {
+        $query = Product::query();
+
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->where('name', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('description', 'LIKE', "%{$searchTerm}%");
+        }
+
+        return response()->json($query->paginate(10));
     }
 
     public function store(Request $request) {
@@ -38,21 +45,25 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(Request $request) {
-        $fields = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-        ]);
+    public function update(Request $request, $id) {
+        try {
+            $fields = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+            ]);
 
-        $product = Product::find($id);
-        $product->update($fields);
+            $product = Product::find($id);
+            $product->update($fields);
 
-        return response()->json([
-            'message' => 'Product updated',
-            'product' => $product,
-        ]);
+            return response()->json([
+                'message' => 'Product updated',
+                'product' => $product,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
     }
 
     public function delete($id) {

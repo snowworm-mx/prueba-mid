@@ -1,12 +1,16 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8002/api";
+const API_URL = "http://localhost:8000/api";
 
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
+  withXSRFToken: true,
   headers: {
+    "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
+    Accept: "application/json",
+    "X-Requested-With": "XMLHttpRequest",
   },
 });
 
@@ -15,7 +19,7 @@ export const register = async (userData) => {
 };
 
 export const login = async (credentials) => {
-  await api.get("http://localhost:8002/sanctum/csrf-cookie");
+  await api.get("http://localhost:8000/sanctum/csrf-cookie");
   return api.post("/login", credentials);
 };
 
@@ -23,8 +27,8 @@ export const logout = async () => {
   return api.post("/logout");
 };
 
-export const getProducts = async (page = 1) => {
-  return api.get(`/products?page=${page}`);
+export const getProducts = async (page = 1, search = "") => {
+  return api.get(`/products?page=${page}&search=${search}`);
 };
 
 export const createProduct = async (productData) => {
@@ -43,10 +47,15 @@ export const deleteProduct = async (id) => {
   return api.delete(`/products/${id}`);
 };
 
-export const getInventoryMovements = async (page = 1, productId = null) => {
-  let url = `/history?page=${page}`;
-  if (productId) {
-    url += `&product=${productId}`;
-  }
+export const createMovement = async (movementData) => {
+  console.log(movementData);
+  const response = await api.post("/stock", movementData);
+  console.log(response);
+  return response;
+};
+
+export const getInventoryMovements = async (page = 1, productId) => {
+  let url = `/history/${productId}?page=${page}`;
+
   return api.get(url);
 };

@@ -12,7 +12,7 @@ Route::get('/user', function (Request $request) {
 
 // Auth routes
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
@@ -24,6 +24,6 @@ Route::put('/products/{id}', [ProductController::class, 'update'])->middleware('
 Route::delete('/products/{id}', [ProductController::class, 'delete'])->middleware('auth:sanctum');
 
 // History routes
-Route::get('/history', [HistoryController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/stock', [HistoryController::class, 'updateStock'])->middleware('auth:sanctum');
+/*Route::get('/history', [HistoryController::class, 'index'])->middleware('auth:sanctum');*/
+Route::post('/stock', [HistoryController::class, 'createMovement'])->middleware('auth:sanctum');
 Route::get('/history/{id}', [HistoryController::class, 'show'])->middleware('auth:sanctum');

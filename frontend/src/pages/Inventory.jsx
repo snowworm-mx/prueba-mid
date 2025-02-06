@@ -21,7 +21,7 @@ export default function InventoryMovements() {
       const response = await getInventoryMovements(page, productId);
 
       setMovements(response.data.data);
-      setTotalPages(response.data.meta.last_page);
+      setTotalPages(response.data.last_page);
     } catch (error) {
       console.error("Error getting inventory movements", error);
     } finally {
@@ -64,8 +64,8 @@ export default function InventoryMovements() {
               movements.map((movement) => (
                 <tr key={movement.id} className="border-b text-center">
                   <td className="p-3">{movement.id}</td>
-                  <td className="p-3">{movement.product_name}</td>
-                  <td className="p-3">{movement.user_name}</td>
+                  <td className="p-3">{movement.product}</td>
+                  <td className="p-3">{movement.user}</td>
                   <td className="p-3">{movement.quantity}</td>
                   <td
                     className={`p-3 font-semibold ${

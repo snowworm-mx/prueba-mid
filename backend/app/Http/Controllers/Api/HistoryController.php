@@ -27,29 +27,32 @@ class HistoryController extends Controller
         return response()->json($movements);
     }
 
-    public function updateStock(Request $request) {
-        $validated = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'stock' => 'required|integer|min:0',
-        ]);
+    public function createMovement(Request $request) {
+        try {
+            $validated = $request->validate([
+                'product_id' => 'required|exists:products,id',
+                'quantity' => 'required|integer|min:0',
+                'type' => 'required|string',
+            ]);
+    
+            $product = Product::findOrFail($validated['product_id']);
 
-        $product = Product::findOrFail($validated['product_id']);
-        $type = $validated['stock'] > $product->stock ? 'INCREASE' : 'DECREASE';
-
-        $product->stock = $validated['stock'];
-        $product->save();
-
-        $movement = History::create([
-            'product_id' => $product->id,
-            'user_id' => Auth::id(),
-            'quantity' => $validated['stock'],
-            'type' => $type,
-        ]);
-
-        return response()->json($movement, 201);
+            $movement = History::create([
+                'product_id' => $product->id,
+                'user_id' => Auth::id(),
+                'quantity' => $validated['quantity'],
+                'type' => $validated['type'],
+            ]);
+    
+            return response()->json($movement, 201);
+           
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
     }
 
     public function show($id) {
+        
         $movement = History::select(
             'history.id',
             'products.name as product',
@@ -60,8 +63,9 @@ class HistoryController extends Controller
         )
         ->join('products', 'history.product_id', '=', 'products.id')
         ->join('users', 'history.user_id', '=', 'users.id')
-        ->findOrFail($id);
-
+        ->findOrFail($id)
+        ->paginate(10);
+        
         return response()->json($movement);
     }
 }

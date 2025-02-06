@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getProductById, updateProduct } from "../services/api";
+import { getProductById, updateProduct, createMovement } from "../services/api";
 
 export default function EditProduct() {
   const { id } = useParams();
@@ -16,6 +16,8 @@ export default function EditProduct() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
+  let [actualStock, setActualStock] = useState(0);
+
   useEffect(() => {
     fetchProduct();
   }, []);
@@ -24,11 +26,13 @@ export default function EditProduct() {
     try {
       const response = await getProductById(id);
 
+      setActualStock(response.data.product.stock);
+
       setProduct({
-        name: response.data.name,
-        description: response.data.description,
-        price: response.data.price,
-        stock: response.data.quantity,
+        name: response.data.product.name,
+        description: response.data.product.description,
+        price: response.data.product.price,
+        stock: response.data.product.stock,
       });
     } catch (error) {
       console.error("Error fetching the product", error);
@@ -46,7 +50,7 @@ export default function EditProduct() {
     e.preventDefault();
     setError("");
 
-    if (!product.name || !product.price || !product.quantity) {
+    if (!product.name || !product.price || !product.stock) {
       setError("Name, price, and stock are required.");
       return;
     }
@@ -56,12 +60,23 @@ export default function EditProduct() {
     formData.append("name", product.name);
     formData.append("description", product.description);
     formData.append("price", product.price);
-    formData.append("quantity", product.quantity);
+    formData.append("stock", product.stock);
 
     formData.append("_method", "PUT");
 
     try {
       await updateProduct(id, formData);
+
+      if (product.stock !== actualStock) {
+        const movement = {
+          product_id: id,
+          quantity: product.stock,
+          type: product.stock > actualStock ? "INCREASE" : "DECREASE",
+        };
+
+        await createMovement(movement);
+      }
+
       navigate("/products");
     } catch (err) {
       setError("Error updating product.", err);
@@ -112,8 +127,8 @@ export default function EditProduct() {
         <label className="block mb-2">Stock</label>
         <input
           type="number"
-          name="quantity"
-          value={product.quantity}
+          name="stock"
+          value={product.stock}
           onChange={handleChange}
           className="w-full border p-2 rounded mb-3"
           required

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -25,25 +26,26 @@ class AuthController extends Controller
     }
 
     public function login(Request $request) {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required',
         ]);
         
-        $user = User::where('email', $request->email)->first();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        if(!$user || !Hash::check($request->password, $user->password)) {
+            $token = Auth::user()->createToken('auth_token')->plainTextToken;
+            
             return response()->json([
-                'message' => 'Invalid credentials',
-            ], 401);
+                'access_token' => $token,
+                'message' => 'Logged in',
+                'user' => Auth::user(),
+            ]);
         }
 
-        $token = $user->createToken('authToken')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'success' => true,
-        ]);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request) {
