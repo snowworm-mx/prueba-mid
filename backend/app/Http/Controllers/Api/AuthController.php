@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
@@ -33,11 +34,8 @@ class AuthController extends Controller
         
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            $token = Auth::user()->createToken('auth_token')->plainTextToken;
             
             return response()->json([
-                'access_token' => $token,
                 'message' => 'Logged in',
                 'user' => Auth::user(),
             ]);
@@ -49,10 +47,23 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request) {
-        $request->user()->tokens->delete();
+        try {
+            //Auth::logout();
+            Auth::guard('web')->logout();
 
-        return [
-            'message' => 'Logged out',
-        ];
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+ 
+            return response()->json(['message' => 'Logged out'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        
+    }
+
+    public function user(Request $request) {
+        $user = Auth::user();
+
+        return response()->json($user);
     }
 }

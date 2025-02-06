@@ -24,7 +24,13 @@ export const login = async (credentials) => {
 };
 
 export const logout = async () => {
-  return api.post("/logout");
+  const response = api.post("/logout");
+  console.log(response);
+  return response;
+};
+
+export const getUser = async () => {
+  return api.get("/user");
 };
 
 export const getProducts = async (page = 1, search = "") => {

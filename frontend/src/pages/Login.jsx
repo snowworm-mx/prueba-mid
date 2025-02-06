@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { emailValidation, passwordValidation } from "./DataValidation";
 
 function Login() {
@@ -33,8 +33,8 @@ function Login() {
           password: form.password,
         });
 
-        localStorage.setItem("token", response.data.token);
-        // setAuth(true);
+        console.log(response);
+
         navigate("/products");
       } else {
         setErrors(newErrors);
@@ -88,6 +88,16 @@ function Login() {
             Login
           </button>
         </form>
+
+        <p className="text-center text-gray-600 mt-4">
+          Create an account{" "}
+          <Link
+            to="/register"
+            className="text-blue-500 hover:underline font-semibold"
+          >
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   );
