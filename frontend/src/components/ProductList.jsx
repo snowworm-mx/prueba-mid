@@ -7,19 +7,21 @@ export default function ProductList() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    showProducts(page);
-  }, [page]);
+    fetchProducts();
+  }, [page, search]);
 
-  const showProducts = async (page) => {
+  const fetchProducts = async () => {
     setLoading(true);
 
     try {
-      const response = await getProducts(page);
+      console.log("fetching products");
+      const response = await getProducts(page, search);
 
       setProducts(response.data.data);
-      setTotalPages(response.data.meta.last_page);
+      setTotalPages(response.data.last_page);
     } catch (error) {
       console.error("Error loading products", error);
     } finally {
@@ -32,7 +34,7 @@ export default function ProductList() {
 
     try {
       await deleteProduct(id);
-      showProducts(page);
+      fetchProducts(page);
     } catch (error) {
       console.error("Error deleting product", error);
     }
@@ -43,12 +45,15 @@ export default function ProductList() {
       <h1 className="text-3xl font-bold text-center text-blue-600">
         Product Manager
       </h1>
+
       <p className="text-center text-gray-500 mb-4"></p>
 
       <div className="flex justify-between mb-4">
         <input
           type="text"
-          placeholder="Search products by name"
+          placeholder="Search products by name or description"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="border p-2 rounded w-1/3"
         />
         <Link
@@ -87,8 +92,8 @@ export default function ProductList() {
                   <td className="p-3">
                     {product.description || "No description"}
                   </td>
-                  <td className="p-3">${product.price.toFixed(2)}</td>
-                  <td className="p-3">{product.quantity}</td>
+                  <td className="p-3">${product.price}</td>
+                  <td className="p-3">{product.stock}</td>
                   <td className="p-3 flex justify-center space-x-2">
                     <Link
                       to={`/products/edit/${product.id}`}
@@ -102,6 +107,8 @@ export default function ProductList() {
                     >
                       🗑 Delete
                     </button>
+                  </td>
+                  <td className="p-3">
                     <Link
                       to={`/inventory?product=${product.id}`}
                       className="bg-gray-400 text-white px-3 py-1 rounded"
