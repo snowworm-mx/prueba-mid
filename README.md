@@ -89,6 +89,6 @@ Puedes ver la demostración del proyecto en el siguiente enlace:
 
 ## Autor
 
-- **Tu Nombre**
+- **Shaury Santiago Aguilar**
 - [GitHub](https://github.com/shauuuh)
 - [LinkedIn](https://www.linkedin.com/in/shaury-ss/)
