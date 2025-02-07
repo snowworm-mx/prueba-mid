@@ -1,136 +1,94 @@
-<div align="center">
-	<div >
-		<img style="background-color: #000; display: inline-block; padding: 10px; border-radius: 8px;" width="500" src="assets/logo.png" alt="Snowworm Logo">
-	</div>
-   <br>
-   <br>
-    <h1 width="200">Desarrollador Fullstack</h1>
-	<p>La siguiente es una prueba para evaluar a aspectos técnicos de los candidatos a desarrollador Fullstack <b>Mid-Level</b>.</p>
-	<br>
-</div>
+# Product Manager - Prueba Técnica
 
-## Objetivo de la Prueba
+Este proyecto es una aplicación web Fullstack desarrollada con **Laravel 11** y **React.js**, diseñada para gestionar productos con autenticación de usuarios y control de inventario.
 
-El objetivo de esta prueba es evaluar la capacidad del candidato para desarrollar una aplicación web que incluya un backend robusto y una API RESTful utilizando **Laravel**, así como un frontend funcional con **React Native**. Durante la prueba se busca medir:
+## Requisitos Previos
 
-1. Habilidades para diseñar una base de datos eficiente.
-2. Capacidad para implementar un backend que cumpla con las mejores prácticas.
-3. Desarrollo de una API RESTful funcional y segura.
-4. Construcción de un frontend utilizando React Native (o alguna otra tecnología si el candidato lo prefiere) para consumir la API.
+Asegúrate de tener instalado lo siguiente en tu sistema:
 
----
+- **PHP 8.4 o superior**
+- **Composer** (Para gestionar dependencias de PHP)
+- **Node.js 18 o superior**
+- **npm o yarn** (Para gestionar dependencias de React)
+- **MySQL o SQLite** (Para la base de datos)
+- **Git** (Para control de versiones)
 
-## Requisitos de Desarrollo
+## Instalación y Configuración
 
-### Funcionalidades Principales
+### 1.- Clonar el Repositorio
 
-1. **Autenticación de Usuarios**
-   - Implementar un sistema de autenticación utilizando Laravel Sanctum.
-   - Permitir el registro, inicio de sesión y cierre de sesión de los usuarios.
-   - Proteger las rutas de la API mediante tokens de acceso.
+```sh
+git clone https://github.com/shauuuh/prueba-mid.git
+cd prueba-mid
+```
 
-2. **Gestión de Productos**
-   - CRUD (crear, leer, actualizar y eliminar) para productos mediante la API.
-   - Validar los siguientes campos:
-     - **Nombre**: Texto corto, obligatorio.
-     - **Descripción**: Texto largo, opcional.
-     - **Precio**: Decimal, obligatorio.
-     - **Cantidad en Inventario**: Número entero, obligatorio (mínimo de 0).
-   - Implementar funciones adicionales para:
-     - **Aumentar o disminuir la cantidad en inventario de un producto**, respetando que no sea menor a 0.
-     - **Historial de movimientos**: Registrar cambios en inventario con fecha, hora y usuario responsable.
+### 2.- Configurar el Backend (Laravel)
 
-3. **Listado de Productos**
-   - Implementar endpoints para:
-     - Obtener todos los productos con soporte para paginación.
-     - Buscar productos por nombre o descripción mediante parámetros en la URL.
+```sh
+cd backend
+cp .env.example .env
+composer install
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
 
-4. **Frontend con React Native o similar**
-   - Crear una interfaz de usuario que permita:
-     - Iniciar sesión y gestionar el token de autenticación.
-     - Visualizar el listado de productos con paginación.
-     - Buscar productos por nombre o descripción.
-     - Crear, editar y eliminar productos.
-     - Consultar el historial de movimientos de un producto.
-   - En caso de no utilizar React Native, se puede emplear otra tecnología, explicando en el archivo `README.md` los motivos de la elección.
+**Nota:** Asegúrate de configurar la conexión a la base de datos en el archivo `.env`.
 
----
+### 3️.- Configurar el Frontend (React.js)
 
-## Restricciones
+```sh
+cd frontend
+npm install
+npm run dev
+```
 
-- No está permitido el uso de paquetes externos para funcionalidades principales como CRUD o búsqueda. Se deben utilizar exclusivamente herramientas nativas de Laravel y la herramienta utilizada para el frontend.
-- **Excepción:** Se permite usar librerías para navegación en el frontend.
+## Ejecutar el Proyecto
 
----
+- **Backend (Laravel):** Se ejecutará en `http://localhost:8000`
+- **Frontend (React):** Se ejecutará en `http://localhost:5173`
 
-## Tecnologías y Herramientas
+## Decisiones Técnicas
 
-- **Backend:** Laravel (versión 11).
-- **Frontend:** React Native (preferentemente) o alguna otra tecnología elegida por el candidato.
-- **Base de Datos:** MySQL o SQLite.
-- **Autenticación:** Laravel Sanctum.
-- **Control de Versiones:** Git.
+- **Autenticación:** Laravel Sanctum con sesiones y cookies para mantener la seguridad.
+- **Base de Datos:** MySQL con migraciones y seeding para datos de prueba.
+- **Api Testing:** Postman para probar peticiones y recibir respuestas del servidor web.
+- **Paginación:** Implementada en Laravel con soporte para búsqueda.
+- **Gestión de Estado:** Se utiliza `useState` y `useEffect` en React para manejar datos actualizar componentes.
+- **Control de Errores:** Manejadores de excepciones en backend y validaciones en frontend con codigos de estado para identificar problemas.
+- **Diseño:** Tailwind CSS para un diseño moderno y responsivo.
+- **Control de Versiones:** Uso de Git y GitFlow para estructurar ramas y commits.
+- **Elección de React.js sobre React Native:** Se eligió React.js en lugar de React Native debido a que por gestión de tiempo y enfoque, se quiso orientar la aplicación a una plataforma web y no a dispositivos móviles. React.js permite un desarrollo más rápido para entornos web y una mejor integración con tecnologías como Laravel, Tailwind CSS y bibliotecas de administración de estado como React Router.
 
----
+## Tecnologías Utilizadas
 
-## Entregables
+### **Backend**
 
-1. **Repositorio de Código:**
-   - Subir el código fuente al repositorio indicado en las intrucciones.
+- Laravel 11
+- PHP 8.4
+- MySQL / SQLite
+- Laravel Sanctum (Autenticación)
 
-2. **Archivo `README.md`:**
-   - Instrucciones claras para configurar y ejecutar el proyecto localmente.
-   - Descripción de las decisiones técnicas tomadas.
-   - Lista de las tecnologías utilizadas.
+### **Frontend**
 
-3. **Demostraciones Visuales:**
-   - Capturas de pantalla o videos mostrando:
-     - Uso del sistema de autenticación.
-     - CRUD de productos.
-     - Funcionalidades avanzadas como gestión de inventarios y búsqueda.
+- React.js (Tecnología elegida porque )
+- React Router
+- Axios (para peticiones API)
+- Tailwind CSS (estilos)
 
----
+### **Herramientas Adicionales**
 
-## Criterios de Evaluación
+- Postman (Pruebas de API)
+- Git y GitHub (Control de versiones)
 
-1. **Funcionalidad:**
-   - Verificar que todas las funcionalidades descritas estén implementadas correctamente.
+## Demostración en Video
 
-2. **Diseño:**
-   - Interfaz simple, funcional y atractiva utilizando Tailwind CSS.
+Puedes ver la demostración del proyecto en el siguiente enlace:
 
-3. **Calidad del Código:**
-   - Evaluar el uso de buenas prácticas en Laravel y React Native.
-   - Organización del código y modularidad.
+[Ver Video en Google Drive](https://drive.google.com/file/d/1AvMJhofQpk-Lq-F9xw2jtq02LpgMiyHz/view?usp=drive_link)
 
-4. **Calidad del control de versiones:**
+## Autor
 
-   - Uso de git flow para la creación los commits del proyecto.
-   - Títulos descriptivos para los commits del proyecto.
-   - Uso de las diferentes funcionalidades de gitflow para todas las carácteriticas del proyecto según se necesite.
-
-5. **Documentación:**
-   - Revisar que el archivo `README.md` sea claro y completo.
-
-6. **Extras Opcionales:**
-   - Pruebas unitarias para el backend y/o frontend.
-   - Validaciones avanzadas en formularios.
-
----
-
-## Tiempo Estimado
-
-Se espera que la prueba pueda completarse en **8 horas**. Se otorgará un plazo de **5 días hábiles** para su entrega.
-
----
-
-## Proceso de Entrega
-
-1. El candidato debe realizar un fork de este repositorio (https://github.com/snowworm-mx/prueba-mid).
-    * Clonar el fork a su máquina local.
-    * Crear un `branch` en su cuenta de GitHub utilizando su nombre completo.
-2. Una vez completada la prueba, realizar un pull request al repositorio original.
-
----
-
-**¡Éxito!**
+- **Tu Nombre**
+- [GitHub](https://github.com/shauuuh)
+- [LinkedIn](https://www.linkedin.com/in/shaury-ss/)
