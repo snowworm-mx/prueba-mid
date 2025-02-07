@@ -21,6 +21,7 @@ export default function InventoryMovements() {
       const response = await getInventoryMovements(page, productId);
 
       setMovements(response.data.data);
+      console.log(response.data.data);
       setTotalPages(response.data.last_page);
     } catch (error) {
       console.error("Error getting inventory movements", error);

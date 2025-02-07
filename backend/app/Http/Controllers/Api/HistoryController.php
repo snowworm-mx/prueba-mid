@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\History;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class HistoryController extends Controller
 {
@@ -46,26 +47,33 @@ class HistoryController extends Controller
     
             return response()->json($movement, 201);
            
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Product not found'], 404);
         }
     }
 
     public function show($id) {
-        
-        $movement = History::select(
-            'history.id',
-            'products.name as product',
-            'users.name as user',
-            'history.quantity',
-            'history.type',
-            'history.created_at'
-        )
-        ->join('products', 'history.product_id', '=', 'products.id')
-        ->join('users', 'history.user_id', '=', 'users.id')
-        ->findOrFail($id)
-        ->paginate(10);
-        
-        return response()->json($movement);
+        try {
+            $movement = History::select(
+                'history.id',
+                'products.name as product',
+                'users.name as user',
+                'history.quantity',
+                'history.type',
+                'history.created_at'
+            )
+            ->join('products', 'history.product_id', '=', 'products.id')
+            ->join('users', 'history.user_id', '=', 'users.id')
+            ->where('history.product_id', $id)
+            ->orderBy('history.created_at', 'desc')
+            ->paginate(10);
+            
+            return response()->json($movement);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Error fetching movements',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

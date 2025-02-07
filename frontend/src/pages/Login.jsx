@@ -9,10 +9,15 @@ function Login() {
     password: "",
   });
 
-  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    credentials: "",
+  });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    setErrors({ email: "", password: "", credentials: "" });
     setForm((prevValue) => {
       return { ...prevValue, [e.target.name]: e.target.value };
     });
@@ -40,8 +45,10 @@ function Login() {
         setErrors(newErrors);
       }
     } catch (error) {
-      console.error(error.response.data);
-      alert("Error trying to login");
+      console.error(error);
+      setErrors({
+        credentials: error.message || "Login failed. Please try again.",
+      });
     }
   };
 
@@ -78,6 +85,9 @@ function Login() {
             />
             {errors.password && (
               <p className="text-red-500 text-center">{errors.password}</p>
+            )}
+            {errors.credentials && (
+              <p className="text-red-500 text-center">{errors.credentials}</p>
             )}
           </div>
 

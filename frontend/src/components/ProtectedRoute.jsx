@@ -11,6 +11,7 @@ export default function ProtectedRoute() {
         await getUser("/user");
         setIsAuthenticated(true);
       } catch (error) {
+        //console.error(error);
         setIsAuthenticated(false);
       }
     };

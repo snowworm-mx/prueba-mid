@@ -43,6 +43,17 @@ export default function EditProduct() {
   };
 
   const handleChange = (e) => {
+    if (
+      (e.target.name === "price" || e.target.name === "stock") &&
+      e.target.value < 0
+    ) {
+      return;
+    }
+
+    if (e.target.name === "stock" && e.target.value.includes(".")) {
+      return;
+    }
+
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 

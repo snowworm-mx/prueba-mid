@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../services/api";
+import { productNameValidation } from "../pages/DataValidation";
 
 export default function CreateProduct() {
   const [form, setForm] = useState({
@@ -10,28 +11,46 @@ export default function CreateProduct() {
     stock: "",
   });
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState({ name: "", general: "" });
   const navigate = useNavigate();
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    if (!form.name || !form.price || !form.stock) {
-      setError("Name, price, and stock are required.");
+  const handleChange = (e) => {
+    if (
+      (e.target.name === "price" || e.target.name === "stock") &&
+      e.target.value < 0
+    ) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("name", form.name);
-    formData.append("description", form.description);
-    formData.append("price", form.price);
-    formData.append("stock", form.stock);
+    if (e.target.name === "stock" && e.target.value.includes(".")) {
+      return;
+    }
+
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     try {
+      if (!form.name || !form.price || !form.stock) {
+        setError({ general: "Name, price, and stock are required." });
+        return;
+      }
+
+      const nameValidation = productNameValidation(form.name);
+
+      if (nameValidation) {
+        setError({ name: nameValidation });
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("description", form.description);
+      formData.append("price", form.price);
+      formData.append("stock", form.stock);
+
       await createProduct(formData);
       navigate("/products");
     } catch (err) {
@@ -44,7 +63,9 @@ export default function CreateProduct() {
       <h1 className="text-3xl font-bold text-center text-blue-600 mb-4">
         Create Product
       </h1>
-      {error && <p className="text-red-500 text-center">{error}</p>}
+      {error.general && (
+        <p className="text-red-500 text-center">{error.general}</p>
+      )}
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 shadow-md rounded-lg"
@@ -59,6 +80,7 @@ export default function CreateProduct() {
           className="w-full border p-2 rounded mb-3"
           required
         />
+        {error.name && <p className="text-red-500 text-center">{error.name}</p>}
 
         <label className="block mb-2">Description</label>
         <textarea

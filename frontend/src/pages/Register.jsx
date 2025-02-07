@@ -18,6 +18,7 @@ function Register() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    setErrors({ name: "", email: "", password: "" });
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -47,8 +48,12 @@ function Register() {
         setErrors(newErrors);
       }
     } catch (error) {
-      console.error(error.response.data);
-      alert("Error register");
+      if (error.status === 422) {
+        //console.error(error.messages.email);
+        setErrors({ email: error.messages.email });
+      }
+      console.error(error.messages);
+      //alert("Error register");
     }
   };
 
