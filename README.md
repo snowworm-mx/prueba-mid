@@ -13,10 +13,10 @@
 
 El objetivo de esta prueba es evaluar la capacidad del candidato para desarrollar una aplicación web que incluya un backend robusto y una API RESTful utilizando **Laravel**, así como un frontend funcional con **React Native**. Durante la prueba se busca medir:
 
-1. Habilidades para diseñar una base de datos eficiente.
-2. Capacidad para implementar un backend que cumpla con las mejores prácticas.
-3. Desarrollo de una API RESTful funcional y segura.
-4. Construcción de un frontend utilizando React Native (o alguna otra tecnología si el candidato lo prefiere) para consumir la API.
+1. Diseño eficiente de la base de datos con migraciones y relaciones adecuadas.
+2. Implementación de un backend con mejores prácticas y optimización del rendimiento.
+3. Desarrollo de una API RESTful funcional y segura con roles de usuario.
+4. Construcción de un frontend utilizando React Native (o alguna otra tecnología si el candidato lo prefiere) con manejo adecuado del estado.
 
 ---
 
@@ -24,12 +24,16 @@ El objetivo de esta prueba es evaluar la capacidad del candidato para desarrolla
 
 ### Funcionalidades Principales
 
-1. **Autenticación de Usuarios**
-   - Implementar un sistema de autenticación utilizando Laravel Sanctum.
+1. **Autenticación Avanzada**
+   - Implementar autenticación con Laravel Sanctum.
    - Permitir el registro, inicio de sesión y cierre de sesión de los usuarios.
+   - Recuperación de contraseña mediante Laravel Mail.
    - Proteger las rutas de la API mediante tokens de acceso.
+   - Implementar roles (admin, empleado):
+      * Solo admin puede gestionar productos.
+      * Empleado solo puede visualizar productos.
 
-2. **Gestión de Productos**
+2. **Gestión de Productos con Categorías**
    - CRUD (crear, leer, actualizar y eliminar) para productos mediante la API.
    - Validar los siguientes campos:
      - **Nombre**: Texto corto, obligatorio.
@@ -39,11 +43,17 @@ El objetivo de esta prueba es evaluar la capacidad del candidato para desarrolla
    - Implementar funciones adicionales para:
      - **Aumentar o disminuir la cantidad en inventario de un producto**, respetando que no sea menor a 0.
      - **Historial de movimientos**: Registrar cambios en inventario con fecha, hora y usuario responsable.
+     - Categoría: Relación con tabla categorías (obligatorio).
+   - Funciones adicionales:
+      * Aumentar o disminuir inventario, respetando stock mínimo.
+      * Historial de movimientos: Registrar cambios con fecha, hora y usuario responsable.
+      * Alerta de stock mínimo cuando la cantidad llegue a cierto umbral.
 
-3. **Listado de Productos**
+3. **Listado y Búsqueda de Productos**
    - Implementar endpoints para:
      - Obtener todos los productos con soporte para paginación.
      - Buscar productos por nombre o descripción mediante parámetros en la URL.
+     - Filtrar productos por categoría.
 
 4. **Frontend con React Native o similar**
    - Crear una interfaz de usuario que permita:
@@ -51,7 +61,8 @@ El objetivo de esta prueba es evaluar la capacidad del candidato para desarrolla
      - Visualizar el listado de productos con paginación.
      - Buscar productos por nombre o descripción.
      - Crear, editar y eliminar productos.
-     - Consultar el historial de movimientos de un producto.
+     - CRUD de productos (solo admin).
+     - Historial de movimientos de productos.
    - En caso de no utilizar React Native, se puede emplear otra tecnología, explicando en el archivo `README.md` los motivos de la elección.
 
 ---
@@ -59,14 +70,14 @@ El objetivo de esta prueba es evaluar la capacidad del candidato para desarrolla
 ## Restricciones
 
 - No está permitido el uso de paquetes externos para funcionalidades principales como CRUD o búsqueda. Se deben utilizar exclusivamente herramientas nativas de Laravel y la herramienta utilizada para el frontend.
-- **Excepción:** Se permite usar librerías para navegación en el frontend.
+- **Excepción:** Se permite usar librerías para navegación en frontend y para autenticación en Laravel.
 
 ---
 
 ## Tecnologías y Herramientas
 
 - **Backend:** Laravel (versión 11).
-- **Frontend:** React Native (preferentemente) o alguna otra tecnología elegida por el candidato.
+- **Frontend:** React Native (preferentemente), React con Tailwind o alguna otra tecnología elegida por el candidato.
 - **Base de Datos:** MySQL o SQLite.
 - **Autenticación:** Laravel Sanctum.
 - **Control de Versiones:** Git.
@@ -88,6 +99,9 @@ El objetivo de esta prueba es evaluar la capacidad del candidato para desarrolla
      - Uso del sistema de autenticación.
      - CRUD de productos.
      - Funcionalidades avanzadas como gestión de inventarios y búsqueda.
+  
+4. **Extras Opcionales:**
+   - Pruebas unitarias en backend y/o frontend por lo menos en 2 modulos principales.
 
 ---
 
@@ -120,7 +134,7 @@ El objetivo de esta prueba es evaluar la capacidad del candidato para desarrolla
 
 ## Tiempo Estimado
 
-Se espera que la prueba pueda completarse en **8 horas**. Se otorgará un plazo de **5 días hábiles** para su entrega.
+Se espera que la prueba pueda completarse en **2 días**. Se otorgará un plazo de **6 días hábiles** para su entrega a partir de que se realice el fork del repositorio.
 
 ---
 
